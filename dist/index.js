@@ -17,16 +17,19 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const db_init_1 = require("./db-init");
 const question_route_1 = require("./routes/question.route");
+const choices_route_1 = require("./routes/choices.route");
+const auth_route_1 = require("./routes/auth.route");
+const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = 4001;
-app.get("/", (req, res) => {
-    res.send("Express + TypeScript Server");
-});
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, db_init_1.getDb)();
     app.use(express_1.default.json());
+    app.use((0, cors_1.default)());
     app.use("/questions", (0, question_route_1.questionRouter)());
+    app.use("/choices", (0, choices_route_1.choicesRouter)());
+    app.use("/auth", (0, auth_route_1.authRouter)());
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 }));
 function asyncRoute(fn) {

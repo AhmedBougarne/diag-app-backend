@@ -34,6 +34,7 @@ export function initChoiceModel(sequelize: Sequelize) {
       response: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: ""
       },
     },
     {

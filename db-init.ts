@@ -1,7 +1,10 @@
 import { Sequelize } from "sequelize";
 import * as mariadb from "mariadb";
 import { initChoiceModel } from "./models/Choice";
-import { initQuestionModel } from "./models/Question";
+import { initQuestionModel, Question } from "./models/Question";
+import { initSessionModel } from "./models/Session";
+import { initUserModel, User } from "./models/User";
+import * as bcrypt from "bcrypt-nodejs";
 let seqPromise: Promise<Sequelize>;
 
 export function getDb(): Promise<Sequelize> {
@@ -11,7 +14,7 @@ export function getDb(): Promise<Sequelize> {
       .createConnection({
         user: "root",
         password: "nimbleways",
-        host: 'localhost',
+        host: "localhost",
         port: 3304,
       })
       .then(() => {
@@ -21,7 +24,7 @@ export function getDb(): Promise<Sequelize> {
           "root",
           "nimbleways" || (null as any),
           {
-            host: 'localhost',
+            host: "localhost",
             port: 3304,
             dialect: "mariadb",
             define: {
@@ -38,6 +41,14 @@ export function getDb(): Promise<Sequelize> {
       .then((sequelize) => {
         initQuestionModel(sequelize);
         initChoiceModel(sequelize);
+        initUserModel(sequelize);
+        initSessionModel(sequelize);
+        User.create({ crmId: "CA0000", role: "agent" });
+        User.create({
+          username: "test@gmail.com",
+          password: bcrypt.hashSync("Test123@"),
+          role: "admin",
+        });
 
         console.log("Connected to MariaDB.");
         return sequelize.sync().then(() => sequelize);

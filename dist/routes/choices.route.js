@@ -9,41 +9,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.questionRouter = void 0;
+exports.choicesRouter = void 0;
 const express_1 = require("express");
 const __1 = require("..");
 const choices_service_1 = require("../services/choices/choices.service");
-const questions_service_1 = require("../services/questions/questions.service");
-function getQuestionsRoute(req, res) {
+function getChoicesRoute(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const questions = yield (0, questions_service_1.getQuestions)();
-            res.json(questions);
+            const choices = yield (0, choices_service_1.getChoices)();
+            res.json(choices);
         }
         catch (e) {
-            throw e;
+            throw `Error : ${e}`;
         }
     });
 }
-function getFirstQuestionRoute(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const choice = yield (0, choices_service_1.getChoiceWithPreviousQuestionIsNull)();
-            if (choice && choice.questionId) {
-                const question = yield (0, questions_service_1.findQuestionById)(choice.questionId);
-                res.json(question);
-            }
-            res.status(500).json();
-        }
-        catch (e) {
-            throw e;
-        }
-    });
-}
-function questionRouter() {
+function choicesRouter() {
     const router = (0, express_1.Router)();
-    router.get("/", (0, __1.asyncRoute)(getQuestionsRoute));
-    router.get("/first", (0, __1.asyncRoute)(getFirstQuestionRoute));
+    router.get("/", (0, __1.asyncRoute)(getChoicesRoute));
     return router;
 }
-exports.questionRouter = questionRouter;
+exports.choicesRouter = choicesRouter;

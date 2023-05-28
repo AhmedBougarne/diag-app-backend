@@ -28,6 +28,9 @@ const sequelize_1 = require("sequelize");
 const mariadb = __importStar(require("mariadb"));
 const Choice_1 = require("./models/Choice");
 const Question_1 = require("./models/Question");
+const Session_1 = require("./models/Session");
+const User_1 = require("./models/User");
+const bcrypt = __importStar(require("bcrypt-nodejs"));
 let seqPromise;
 function getDb() {
     if (!seqPromise) {
@@ -36,13 +39,13 @@ function getDb() {
             .createConnection({
             user: "root",
             password: "nimbleways",
-            host: 'localhost',
+            host: "localhost",
             port: 3304,
         })
             .then(() => {
             // Safe to use sequelize now
             const seq = new sequelize_1.Sequelize(dbName, "root", "nimbleways" || null, {
-                host: 'localhost',
+                host: "localhost",
                 port: 3304,
                 dialect: "mariadb",
                 define: {
@@ -58,6 +61,14 @@ function getDb() {
             .then((sequelize) => {
             (0, Question_1.initQuestionModel)(sequelize);
             (0, Choice_1.initChoiceModel)(sequelize);
+            (0, User_1.initUserModel)(sequelize);
+            (0, Session_1.initSessionModel)(sequelize);
+            User_1.User.create({ crmId: "CA0000", role: "agent" });
+            User_1.User.create({
+                username: "test@gmail.com",
+                password: bcrypt.hashSync("Test123@"),
+                role: "admin",
+            });
             console.log("Connected to MariaDB.");
             return sequelize.sync().then(() => sequelize);
         })
