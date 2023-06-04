@@ -8,7 +8,7 @@ class Choice extends sequelize_1.Model {
 exports.Choice = Choice;
 function initChoiceModel(sequelize) {
     Choice.init({
-        choiceId: {
+        id: {
             type: sequelize_1.DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true,

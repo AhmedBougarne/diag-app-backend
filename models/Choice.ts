@@ -2,7 +2,7 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 import { Question } from "./Question";
 
 export class Choice extends Model {
-  public choiceId!: number; // Note that the `null assertion` `!` is required in strict mode.
+  public id!: number; // Note that the `null assertion` `!` is required in strict mode.
   public nextQuestion!: number | null;
   public previousQuestion!: number | null;
   public questionId!: number;
@@ -13,7 +13,7 @@ export class Choice extends Model {
 export function initChoiceModel(sequelize: Sequelize) {
   Choice.init(
     {
-      choiceId: {
+      id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,

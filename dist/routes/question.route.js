@@ -25,6 +25,18 @@ function getQuestionsRoute(req, res) {
         }
     });
 }
+function getQuestionByIdRoute(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { id } = req.params;
+            const question = yield (0, questions_service_1.findQuestionById)(Number(id));
+            res.json(question);
+        }
+        catch (e) {
+            throw e;
+        }
+    });
+}
 function getFirstQuestionRoute(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -40,9 +52,43 @@ function getFirstQuestionRoute(req, res) {
         }
     });
 }
+function saveQuestionRoute(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { questionText, questionTitle } = req.body;
+            const question = yield (0, questions_service_1.saveQuestion)(questionText, questionTitle);
+            if (question) {
+                res.json(question);
+            }
+            res.status(500).json();
+        }
+        catch (e) {
+            throw e;
+        }
+    });
+}
+function editQuestionRoute(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { questionText, questionTitle } = req.body;
+            const { id } = req.params;
+            const question = yield (0, questions_service_1.editQuestion)(Number(id), questionText, questionTitle);
+            if (question) {
+                res.status(201).json(question);
+            }
+            res.status(500).json();
+        }
+        catch (e) {
+            throw e;
+        }
+    });
+}
 function questionRouter() {
     const router = (0, express_1.Router)();
     router.get("/", (0, __1.asyncRoute)(getQuestionsRoute));
+    router.get("/:id", (0, __1.asyncRoute)(getQuestionByIdRoute));
+    router.post("/save", (0, __1.asyncRoute)(saveQuestionRoute));
+    router.post("/edit/:id", (0, __1.asyncRoute)(editQuestionRoute));
     router.get("/first", (0, __1.asyncRoute)(getFirstQuestionRoute));
     return router;
 }

@@ -13,14 +13,21 @@ exports.authRouter = void 0;
 const express_1 = require("express");
 const __1 = require("..");
 const user_service_1 = require("../services/user.service");
+const auth_utils_1 = require("../utils/auth.utils");
 function signinRoute(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const userBody = req.body;
             const user = yield (0, user_service_1.findUser)(userBody);
-            console.log(user);
             if (user) {
-                res.status(200).json({ authenticated: true, message: "Success" });
+                const { jwt } = yield (0, auth_utils_1.makeJWTForPayload)({
+                    id: user.id,
+                    username: user.role === user_service_1.Role.admin ? user.username : user.crmId,
+                    scope: user.role,
+                });
+                res
+                    .status(200)
+                    .json({ authenticated: true, message: "Login successfully", jwt });
             }
             else {
                 res.status(500).json({ message: " Error sign in", authenticated: false });

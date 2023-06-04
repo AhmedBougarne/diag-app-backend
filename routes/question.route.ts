@@ -2,8 +2,10 @@ import { Request, Response, Router } from "express";
 import { asyncRoute } from "..";
 import { getChoiceWithPreviousQuestionIsNull } from "../services/choices/choices.service";
 import {
+  editQuestion,
   findQuestionById,
   getQuestions,
+  saveQuestion,
 } from "../services/questions/questions.service";
 
 async function getQuestionsRoute(req: Request, res: Response): Promise<void> {
@@ -14,6 +16,20 @@ async function getQuestionsRoute(req: Request, res: Response): Promise<void> {
     throw e;
   }
 }
+
+async function getQuestionByIdRoute(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const { id } = req.params;
+    const question = await findQuestionById(Number(id));
+    res.json(question);
+  } catch (e) {
+    throw e;
+  }
+}
+
 async function getFirstQuestionRoute(
   req: Request,
   res: Response
@@ -29,9 +45,42 @@ async function getFirstQuestionRoute(
     throw e;
   }
 }
+async function saveQuestionRoute(req: Request, res: Response): Promise<void> {
+  try {
+    const { questionText, questionTitle } = req.body;
+    const question = await saveQuestion(questionText, questionTitle);
+    if (question) {
+      res.json(question);
+    }
+    res.status(500).json();
+  } catch (e) {
+    throw e;
+  }
+}
+
+async function editQuestionRoute(req: Request, res: Response): Promise<void> {
+  try {
+    const { questionText, questionTitle } = req.body;
+    const { id } = req.params;
+    const question = await editQuestion(
+      Number(id),
+      questionText,
+      questionTitle
+    );
+    if (question) {
+      res.status(201).json(question);
+    }
+    res.status(500).json();
+  } catch (e) {
+    throw e;
+  }
+}
 export function questionRouter(): Router {
   const router = Router();
   router.get("/", asyncRoute(getQuestionsRoute));
+  router.get("/:id", asyncRoute(getQuestionByIdRoute));
+  router.post("/save", asyncRoute(saveQuestionRoute));
+  router.post("/edit/:id", asyncRoute(editQuestionRoute));
   router.get("/first", asyncRoute(getFirstQuestionRoute));
 
   return router;
