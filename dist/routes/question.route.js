@@ -40,9 +40,7 @@ function getQuestionByIdRoute(req, res) {
 function getFirstQuestionRoute(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.log("test");
             const choice = yield (0, choices_service_1.getChoiceWithPreviousQuestionIsNull)();
-            console.log("choice", choice);
             if (choice && choice.questionId) {
                 const question = yield (0, questions_service_1.findQuestionById)(choice.questionId);
                 res.json(question);
