@@ -4,6 +4,7 @@ export const getChoices = async () => {
   return Choice.findAll();
 };
 export const getChoiceWithPreviousQuestionIsNull = () => {
+  console.log("hola")
   return Choice.findOne({
     where: {
       previousQuestion: null,

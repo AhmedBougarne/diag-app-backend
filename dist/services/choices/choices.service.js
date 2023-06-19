@@ -16,6 +16,7 @@ const getChoices = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getChoices = getChoices;
 const getChoiceWithPreviousQuestionIsNull = () => {
+    console.log("hola");
     return Choice_1.Choice.findOne({
         where: {
             previousQuestion: null,

@@ -35,15 +35,17 @@ async function getFirstQuestionRoute(
   res: Response
 ): Promise<void> {
   try {
+    console.log("test")
     const choice = await getChoiceWithPreviousQuestionIsNull();
+    console.log("choice",choice)
     if (choice && choice.questionId) {
       const question = await findQuestionById(choice.questionId);
       res.json(question);
       return
     }
     res.status(500).json({});
-  } catch (e) {
-    throw e;
+  } catch (e:any) {
+    console.log("error",e.message)
   }
 }
 async function saveQuestionRoute(req: Request, res: Response): Promise<void> {
@@ -79,10 +81,10 @@ async function editQuestionRoute(req: Request, res: Response): Promise<void> {
 export function questionRouter(): Router {
   const router = Router();
   router.get("/", asyncRoute(getQuestionsRoute));
+  router.get("/first", asyncRoute(getFirstQuestionRoute));
   router.get("/:id", asyncRoute(getQuestionByIdRoute));
   router.post("/save", asyncRoute(saveQuestionRoute));
   router.post("/edit/:id", asyncRoute(editQuestionRoute));
-  router.get("/first", asyncRoute(getFirstQuestionRoute));
 
   return router;
 }
