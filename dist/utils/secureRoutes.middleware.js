@@ -20,7 +20,6 @@ function secureRoutesMiddleware(scope) {
     const scopes = Array.isArray(scope) ? scope : [scope];
     return (0, auth_utils_1.asyncRoute)((req, res, next) => __awaiter(this, void 0, void 0, function* () {
         const jwt = (0, auth_utils_1.getJwtFromRequest)(req);
-        console.log(jwt);
         if (!jwt) {
             res.status(http_status_codes_1.StatusCodes.UNAUTHORIZED);
             return;
@@ -47,12 +46,10 @@ function secureRoutesMiddleware(scope) {
         }
         // @ts-ignore
         req.jwt = decoded;
-        console.log("decoded", decoded);
         // TODO : change type of Request to by dynamic
         // @ts-ignore
         req.user = { email: decoded.sub, id: decoded.id, scope: jwtScopes };
         // @ts-ignore
-        console.log("req.user", req.user);
         next();
     }));
 }

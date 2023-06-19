@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getChoiceWithPreviousQuestionIsNull = exports.getChoices = void 0;
+exports.findChoiceById = exports.editChoice = exports.saveChoice = exports.getChoiceWithPreviousQuestionIsNull = exports.getChoices = void 0;
 const Choice_1 = require("../../models/Choice");
 const getChoices = () => __awaiter(void 0, void 0, void 0, function* () {
     return Choice_1.Choice.findAll();
@@ -23,3 +23,19 @@ const getChoiceWithPreviousQuestionIsNull = () => {
     });
 };
 exports.getChoiceWithPreviousQuestionIsNull = getChoiceWithPreviousQuestionIsNull;
+const saveChoice = (choice) => {
+    return Choice_1.Choice.create(Object.assign({}, choice));
+};
+exports.saveChoice = saveChoice;
+const editChoice = (id, choice) => {
+    return Choice_1.Choice.upsert(Object.assign(Object.assign({}, choice), { id }));
+};
+exports.editChoice = editChoice;
+const findChoiceById = (id) => {
+    return Choice_1.Choice.findOne({
+        where: {
+            id,
+        },
+    });
+};
+exports.findChoiceById = findChoiceById;

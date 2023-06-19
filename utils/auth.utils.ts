@@ -54,7 +54,6 @@ async function makeJWT(
 
 export async function makeJWTForPayload(content: AppUser): Promise<JWTCraft> {
   const { id } = content;
-  console.log(content)
   return makeJWT(id, (content as AppUser).username, content.scope);
 }
 

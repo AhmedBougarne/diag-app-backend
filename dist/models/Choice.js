@@ -29,7 +29,7 @@ function initChoiceModel(sequelize) {
         response: {
             type: sequelize_1.DataTypes.STRING,
             allowNull: true,
-            defaultValue: ""
+            defaultValue: "",
         },
     }, {
         sequelize,

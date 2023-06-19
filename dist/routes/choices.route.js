@@ -24,9 +24,60 @@ function getChoicesRoute(req, res) {
         }
     });
 }
+function getChoiceByIdRoute(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { id } = req.params;
+            const question = yield (0, choices_service_1.findChoiceById)(Number(id));
+            res.json(question);
+        }
+        catch (e) {
+            throw e;
+        }
+    });
+}
+function saveChoiceRoute(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const choice = req.body;
+            const question = yield (0, choices_service_1.saveChoice)(choice);
+            if (question) {
+                res.json(question);
+            }
+            res.status(500).json();
+        }
+        catch (e) {
+            throw e;
+        }
+    });
+}
+function editChoiceRoute(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const choice = req.body;
+            const { id } = req.params;
+            console.log("d;smf;ds");
+            console.log("id", id);
+            console.log("choice", choice);
+            const question = yield (0, choices_service_1.editChoice)(Number(id), choice);
+            console.log("hola");
+            if (question) {
+                res.status(201).json(question);
+            }
+            res.status(500).json();
+        }
+        catch (e) {
+            console.log(e.message);
+            throw e;
+        }
+    });
+}
 function choicesRouter() {
     const router = (0, express_1.Router)();
     router.get("/", (0, __1.asyncRoute)(getChoicesRoute));
+    router.get("/:id", (0, __1.asyncRoute)(getChoiceByIdRoute));
+    router.post("/save", (0, __1.asyncRoute)(saveChoiceRoute));
+    router.post("/edit/:id", (0, __1.asyncRoute)(editChoiceRoute));
     return router;
 }
 exports.choicesRouter = choicesRouter;

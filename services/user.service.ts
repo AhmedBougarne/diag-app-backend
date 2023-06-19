@@ -52,7 +52,6 @@ export async function checkUser<T extends User>(
   if (!dbUser) {
     return null;
   }
-  const dbHashedPwd = dbUser.password;
-  const isCorrectPassword: boolean = await bcryptCompare(password, dbHashedPwd);
-  return isCorrectPassword ? dbUser : null;
+  
+  return dbUser.password === password ? dbUser : null;
 }

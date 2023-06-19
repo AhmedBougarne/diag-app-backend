@@ -39,8 +39,9 @@ async function getFirstQuestionRoute(
     if (choice && choice.questionId) {
       const question = await findQuestionById(choice.questionId);
       res.json(question);
+      return
     }
-    res.status(500).json();
+    res.status(500).json({});
   } catch (e) {
     throw e;
   }

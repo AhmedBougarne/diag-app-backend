@@ -22,6 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDb = void 0;
 const sequelize_1 = require("sequelize");
@@ -30,7 +39,6 @@ const Choice_1 = require("./models/Choice");
 const Question_1 = require("./models/Question");
 const Session_1 = require("./models/Session");
 const User_1 = require("./models/User");
-const bcrypt = __importStar(require("bcrypt-nodejs"));
 let seqPromise;
 function getDb() {
     if (!seqPromise) {
@@ -58,25 +66,26 @@ function getDb() {
             });
             return seq.authenticate().then(() => seq);
         })
-            .then((sequelize) => {
+            .then((sequelize) => __awaiter(this, void 0, void 0, function* () {
             (0, Question_1.initQuestionModel)(sequelize);
             (0, Choice_1.initChoiceModel)(sequelize);
             (0, User_1.initUserModel)(sequelize);
             (0, Session_1.initSessionModel)(sequelize);
-            User_1.User.create({ crmId: "CA0000", role: "agent" });
-            User_1.User.create({
+            yield User_1.User.create({ crmId: "CA0000", role: "agent" });
+            yield User_1.User.create({
                 username: "test@gmail.com",
-                password: bcrypt.hashSync("Test123@"),
+                password: "Test123@",
                 role: "admin",
             });
             console.log("Connected to MariaDB.");
             return sequelize.sync().then(() => sequelize);
-        })
+        }))
             .catch((err) => {
             console.error("Unable to connect to the database:", err);
             throw err;
         });
     }
+    console.log("gfg");
     return seqPromise;
 }
 exports.getDb = getDb;

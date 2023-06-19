@@ -1,10 +1,9 @@
 import { Sequelize } from "sequelize";
 import * as mariadb from "mariadb";
 import { initChoiceModel } from "./models/Choice";
-import { initQuestionModel, Question } from "./models/Question";
+import { initQuestionModel } from "./models/Question";
 import { initSessionModel } from "./models/Session";
 import { initUserModel, User } from "./models/User";
-import * as bcrypt from "bcrypt-nodejs";
 let seqPromise: Promise<Sequelize>;
 
 export function getDb(): Promise<Sequelize> {
@@ -38,15 +37,15 @@ export function getDb(): Promise<Sequelize> {
         );
         return seq.authenticate().then(() => seq);
       })
-      .then((sequelize) => {
+      .then(async (sequelize) => {
         initQuestionModel(sequelize);
         initChoiceModel(sequelize);
         initUserModel(sequelize);
         initSessionModel(sequelize);
-        User.create({ crmId: "CA0000", role: "agent" });
-        User.create({
+        await User.create({ crmId: "CA0000", role: "agent" });
+        await User.create({
           username: "test@gmail.com",
-          password: bcrypt.hashSync("Test123@"),
+          password:"Test123@",
           role: "admin",
         });
 
@@ -58,5 +57,6 @@ export function getDb(): Promise<Sequelize> {
         throw err;
       });
   }
+  console.log("gfg")
   return seqPromise;
 }

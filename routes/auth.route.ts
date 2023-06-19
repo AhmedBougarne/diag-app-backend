@@ -7,7 +7,7 @@ async function signinRoute(req: Request, res: Response): Promise<void> {
   try {
     const userBody: IUser = req.body;
     const user = await findUser(userBody);
-
+   
     if (user) {
       const { jwt } = await makeJWTForPayload({
         id: user.id,

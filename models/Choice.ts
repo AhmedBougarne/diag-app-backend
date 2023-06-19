@@ -9,7 +9,13 @@ export class Choice extends Model {
   public value!: string;
   public response!: string | null;
 }
-
+export interface IChoice {
+  nextQuestion?: number | null;
+  previousQuestion?: number | null;
+  questionId?: number;
+  value?: string;
+  response?: string | null;
+}
 export function initChoiceModel(sequelize: Sequelize) {
   Choice.init(
     {
@@ -34,7 +40,7 @@ export function initChoiceModel(sequelize: Sequelize) {
       response: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ""
+        defaultValue: "",
       },
     },
     {

@@ -71,9 +71,7 @@ function checkUser(findUserRes, password) {
         if (!dbUser) {
             return null;
         }
-        const dbHashedPwd = dbUser.password;
-        const isCorrectPassword = yield bcryptCompare(password, dbHashedPwd);
-        return isCorrectPassword ? dbUser : null;
+        return dbUser.password === password ? dbUser : null;
     });
 }
 exports.checkUser = checkUser;

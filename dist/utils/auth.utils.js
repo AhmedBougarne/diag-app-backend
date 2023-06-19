@@ -33,7 +33,6 @@ function makeJWT(id, subject, scope) {
 function makeJWTForPayload(content) {
     return __awaiter(this, void 0, void 0, function* () {
         const { id } = content;
-        console.log(content);
         return makeJWT(id, content.username, content.scope);
     });
 }

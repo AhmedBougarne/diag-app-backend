@@ -44,8 +44,9 @@ function getFirstQuestionRoute(req, res) {
             if (choice && choice.questionId) {
                 const question = yield (0, questions_service_1.findQuestionById)(choice.questionId);
                 res.json(question);
+                return;
             }
-            res.status(500).json();
+            res.status(500).json({});
         }
         catch (e) {
             throw e;
