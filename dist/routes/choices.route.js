@@ -56,11 +56,7 @@ function editChoiceRoute(req, res) {
         try {
             const choice = req.body;
             const { id } = req.params;
-            console.log("d;smf;ds");
-            console.log("id", id);
-            console.log("choice", choice);
             const question = yield (0, choices_service_1.editChoice)(Number(id), choice);
-            console.log("hola");
             if (question) {
                 res.status(201).json(question);
             }
