@@ -35,9 +35,7 @@ async function getFirstQuestionRoute(
   res: Response
 ): Promise<void> {
   try {
-    console.log("test")
     const choice = await getChoiceWithPreviousQuestionIsNull();
-    console.log("choice",choice)
     if (choice && choice.questionId) {
       const question = await findQuestionById(choice.questionId);
       res.json(question);
